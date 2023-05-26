@@ -1,6 +1,6 @@
 /*!
  * @uni-helper/galanga 0.1.6-test1 (https://github.com/uni-helper/galanga)
- * API https://censujiang.galanga.com/api/
+ * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
  */
@@ -501,12 +501,16 @@ function formatNumber(value, decimal = 2) {
 }
 
 function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
+    let result;
+    // #ifdef H5
+    result = checkDeviceType$1(types);
+    // #endif
+    // #ifndef H5
     const res = uni.getSystemInfoSync();
     if (res.uniPlatform === 'web') {
         return checkDeviceType$1(types);
     }
     else {
-        //这个之后还要细微修改
         const deviceInfo = {
             os: res.osName,
             browser: res.browserName,
@@ -522,12 +526,14 @@ function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
         }
         // #endif
         if (typeof types === 'string') {
-            return deviceInfo[types];
+            result = deviceInfo[types];
         }
         else {
-            return shakeObject(deviceInfo, types);
+            result = shakeObject(deviceInfo, types);
         }
     }
+    // #endif
+    return result;
 }
 
 //import * as packageJson from '../package.json'

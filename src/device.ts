@@ -9,11 +9,15 @@ interface DeviceInfo {
 }
 
 export function checkDeviceType(types: string[] | string = ['os', 'browser', 'device', 'platform']): DeviceInfo | string | object {
+  let result: DeviceInfo | string | object
+  // #ifdef H5
+  result = origin.checkDeviceType(types) as DeviceInfo | string | object
+  // #endif
+  // #ifndef H5
   const res = uni.getSystemInfoSync()
   if (res.uniPlatform === 'web') {
     return origin.checkDeviceType(types) as DeviceInfo | string | object
   } else {
-    //这个之后还要细微修改
     const deviceInfo: DeviceInfo = {
       os: res.osName,
       browser: res.browserName,
@@ -28,10 +32,12 @@ export function checkDeviceType(types: string[] | string = ['os', 'browser', 'de
     }
     // #endif
     if (typeof types === 'string') {
-      return deviceInfo[types]
+      result = deviceInfo[types]
     } else {
-      return origin.shakeObject(deviceInfo, types);
+      result = origin.shakeObject(deviceInfo, types);
     }
   }
+  // #endif
+  return result
 }
 

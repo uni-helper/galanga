@@ -14,7 +14,7 @@
     "lint": "eslint src/ --ext .ts,.tsx,.js,.jsx --cache",
     "lint:fix": "eslint src/ --ext .ts,.tsx,.js,.jsx --cache --fix",
     "tsc": "tsc",
-    "build": "npm run clean && npm run build:esm && npm run build:esm.min",
+    "build": "npm run clean && npm run build:esm",
     "build:esm": "rollup -c config/rollup.config.js",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "script:delDistDTsFile": "node ./scripts/delDistDTsFile.js"

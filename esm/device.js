@@ -1,11 +1,15 @@
 import * as origin from 'galanga';
 export function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
+    let result;
+    // #ifdef H5
+    result = origin.checkDeviceType(types);
+    // #endif
+    // #ifndef H5
     const res = uni.getSystemInfoSync();
     if (res.uniPlatform === 'web') {
         return origin.checkDeviceType(types);
     }
     else {
-        //这个之后还要细微修改
         const deviceInfo = {
             os: res.osName,
             browser: res.browserName,
@@ -21,10 +25,12 @@ export function checkDeviceType(types = ['os', 'browser', 'device', 'platform'])
         }
         // #endif
         if (typeof types === 'string') {
-            return deviceInfo[types];
+            result = deviceInfo[types];
         }
         else {
-            return origin.shakeObject(deviceInfo, types);
+            result = origin.shakeObject(deviceInfo, types);
         }
     }
+    // #endif
+    return result;
 }
