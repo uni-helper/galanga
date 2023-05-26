@@ -1,8 +1,11 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const deviceInfo = ref(checkDeviceType())
+</script>
 
 <template>
   <Logos />
   <InputEntry />
+  {{ deviceInfo }}
 </template>
 
 <style></style>
