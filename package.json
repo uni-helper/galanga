@@ -7,6 +7,7 @@
   "module": "esm/index.js",
   "sideEffects": false,
   "scripts": {
+    "demo:reload": "node ./scripts/demo-reload.js",
     "clean": "rimraf ./dist",
     "test": "npm run lint && nyc mocha",
     "release": "node ./scripts/release.js",
