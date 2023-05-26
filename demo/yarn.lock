@@ -2291,7 +2291,7 @@
 "@uni-helper/galanga@file:..":
   version "0.1.5-test1"
   dependencies:
-    galanga "^0.1.5"
+    galanga "^0.1.6"
 
 "@uni-helper/pages-json-schema@^0.2.1":
   version "0.2.1"
@@ -4382,10 +4382,10 @@ functions-have-names@^1.2.2, functions-have-names@^1.2.3:
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-galanga@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.5.tgz#a6751c99bafbe3001b98434b93c83cca31210ac8"
-  integrity sha512-sURLVCRkZe2r85L1gxDjYSzYGqm5/EtuqzM6ff2eDLm1iPfxKEFR3aKPB8mkITj8grBkOlavD6/OvjE50Mb8+Q==
+galanga@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.6.tgz#00047864f0b130e327e374f78583923d8de22803"
+  integrity sha512-0Xa7qRx2VcpO7tmmzQ6PcUnDO2Rx55+R6Lc8H2GyOQqlZ09K8cGqxI2pDRyVRdmStQ6sIRQwog/VOumSjBWLBQ==
 
 generic-names@^4.0.0:
   version "4.0.0"

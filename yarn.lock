@@ -1562,10 +1562,10 @@ function-bind@^1.1.1:
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-galanga@^0.1.5:
-  version "0.1.5"
-  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.5.tgz#a6751c99bafbe3001b98434b93c83cca31210ac8"
-  integrity sha512-sURLVCRkZe2r85L1gxDjYSzYGqm5/EtuqzM6ff2eDLm1iPfxKEFR3aKPB8mkITj8grBkOlavD6/OvjE50Mb8+Q==
+galanga@^0.1.6-fix.1:
+  version "0.1.6-fix.1"
+  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.6-fix.1.tgz#40d4b238f2dd0cc6e083558814bc80e74d8b63e9"
+  integrity sha512-TcqKmkbo1NNytHk5GMQgypBPUMrwka/UEVCNObdbaVOq98ql+XZ5OOngEfqA3fXuarJStGNOVRJGVIlCrTUdXw==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

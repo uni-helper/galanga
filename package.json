@@ -1,6 +1,6 @@
 {
   "name": "@uni-helper/galanga",
-  "version": "0.1.5-test1",
+  "version": "0.1.6-test1",
   "description": "JS common function library(UNI-APP version of Galanga)",
   "main": "esm/index.js",
   "jsnext:main": "esm/index.js",
@@ -16,7 +16,6 @@
     "tsc": "tsc",
     "build": "npm run clean && npm run build:esm && npm run build:esm.min",
     "build:esm": "rollup -c config/rollup.config.js",
-    "build:esm.min": "cross-env NODE_ENV=production npm run build:esm",
     "coveralls": "nyc report --reporter=text-lcov | coveralls",
     "script:delDistDTsFile": "node ./scripts/delDistDTsFile.js"
   },
@@ -72,6 +71,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "galanga": "^0.1.5"
+    "galanga": "^0.1.6-fix.1"
   }
 }

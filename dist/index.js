@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.1.5-test1 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.1.6-test1 (https://github.com/uni-helper/galanga)
  * API https://censujiang.galanga.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -313,6 +313,35 @@ const locationPermission = {
     }
 };
 
+//将importObject中的值更新到object中，如果importObject中的值为空，则不更新
+function updateObjectFromImport(importObject, object) {
+    for (let key in object) {
+        if (importObject.hasOwnProperty(key)) {
+            if (typeof object[key] === 'object' && typeof importObject[key] === 'object') {
+                updateObjectFromImport(importObject[key], object[key]);
+            }
+            else {
+                //再根据是否为空来判断是否要更新
+                if (checkNotNull(importObject[key])) {
+                    object[key] = importObject[key];
+                }
+            }
+        }
+    }
+    return object;
+}
+//根据输入的数组，将原有的object中的数组摇树，生成新的object
+//例如有一个object为{a:1,b:2,c:3,d:4,e:5,f:6,g:7,h:8,i:9,j:10},数组为['a','b','c','d']，则返回的object为{a:1,b:2,c:3,d:4}
+function shakeObject(object, array) {
+    let result = {};
+    array.forEach(key => {
+        if (object.hasOwnProperty(key)) {
+            result[key] = object[key];
+        }
+    });
+    return result;
+}
+
 const clipboard = {
     read: async (onlyString = true) => {
         if (await clipboardPermission.request() == true) {
@@ -353,82 +382,77 @@ const clipboard = {
         }
     }
 };
-function checkDeviceType(types = ['os', 'browser', 'device'], return_string = false) {
+function checkDeviceType$1(types = ['os', 'browser', 'device', 'platform']) {
     const ua = navigator.userAgent;
     function getOS() {
-        const osRegex = /(HarmonyOS)\/([\d.]+)|(Android);?[\s\/]+([\d.]+)?|(iPad).*OS\s([\d_]+)|(iPod)(.*OS\s([\d_]+))?|(iPhone\sOS)\s([\d_]+)|(Windows\sPhone)\sOS\s([\d.]+)|(Macintosh);.*Mac\sOS\sX\s([\d_]+)|(Windows\sNT)\s([\d.]+)|(Linux)\s?([\d.]+)?/;
-        const matches = ua.match(osRegex);
-        if (matches) {
-            if (matches[1]) {
-                return 'harmonyos';
-            }
-            else if (matches[3]) {
-                return 'android';
-            }
-            else if (matches[5] || matches[7] || matches[9]) {
-                return 'ios';
-            }
-            else if (matches[11]) {
-                return 'wp';
-            }
-            else if (matches[13]) {
-                return 'mac';
-            }
-            else if (matches[15]) {
-                return 'windows';
-            }
-            else if (matches[17]) {
-                return 'linux';
-            }
+        if (/Windows/i.test(ua)) {
+            return 'windows';
+        }
+        else if (/Macintosh/i.test(ua)) {
+            return 'mac';
+        }
+        else if (/Linux/i.test(ua)) {
+            return 'linux';
+        }
+        else if (/HarmonyOS/i.test(ua)) {
+            return 'harmonyos';
+        }
+        else if (/Android/i.test(ua)) {
+            return 'android';
+        }
+        else if (/iPhone/i.test(ua) || /iPod/i.test(ua) || /iPad/i.test(ua)) {
+            return 'ios';
         }
         return 'other';
     }
     function getBrowser() {
-        const browserRegex = /(MicroMessenger)\/([\d.]+)|(QQ)\/([\d.]+)|(UCBrowser)\/([\d.]+)|(360SE)|(360EE)|(Maxthon)|(TaoBrowser)|(TheWorld)|(SE)\s([\d.]+)|(LBBROWSER)|(Chrome)\/([\d.]+)|(Firefox)\/([\d.]+)|(Opera).+Version\/([\d.]+)|(Safari)\/([\d.]+)|(Trident)\/([\d.]+)/;
-        const matches = ua.match(browserRegex);
-        if (matches) {
-            if (matches[1]) {
-                return 'wechat';
-            }
-            else if (matches[3]) {
-                return 'qq';
-            }
-            else if (matches[5]) {
-                return 'uc';
-            }
-            else if (matches[6] || matches[7]) {
-                return '360';
-            }
-            else if (matches[8]) {
-                return 'maxthon';
-            }
-            else if (matches[9]) {
-                return 'taobao';
-            }
-            else if (matches[10]) {
-                return 'theworld';
-            }
-            else if (matches[12]) {
-                return 'sogou';
-            }
-            else if (matches[13]) {
-                return 'liebao';
-            }
-            else if (matches[14]) {
-                return 'chrome';
-            }
-            else if (matches[15]) {
-                return 'firefox';
-            }
-            else if (matches[16]) {
-                return 'opera';
-            }
-            else if (matches[17]) {
-                return 'safari';
-            }
-            else if (matches[18]) {
-                return 'ie';
-            }
+        if (/MicroMessenger/i.test(ua)) {
+            return 'wechat';
+        }
+        else if (/QQ/i.test(ua)) {
+            return 'qq';
+        }
+        else if (/Alipay/i.test(ua)) {
+            return 'alipay';
+        }
+        else if (/Weibo/i.test(ua)) {
+            return 'weibo';
+        }
+        else if (/DingTalk/i.test(ua)) {
+            return 'dingtalk';
+        }
+        else if (/Taobao/i.test(ua)) {
+            return 'taobao';
+        }
+        else if (/Tmall/i.test(ua)) {
+            return 'tmall';
+        }
+        else if (/Edge/i.test(ua)) {
+            return 'edge';
+        }
+        else if (/Opera/i.test(ua)) {
+            return 'opera';
+        }
+        else if (/360SE/i.test(ua)) {
+            return '360';
+        }
+        else if (/UCBrowser/i.test(ua)) {
+            return 'uc';
+        }
+        else if (/Baidu/i.test(ua)) {
+            return 'baidu';
+        }
+        else if (/Chrome/i.test(ua)) {
+            return 'chrome';
+        }
+        else if (/Safari/i.test(ua)) {
+            return 'safari';
+        }
+        else if (/Firefox/i.test(ua)) {
+            return 'firefox';
+        }
+        else if (/MSIE/i.test(ua)) {
+            return 'ie';
         }
         return 'other';
     }
@@ -448,35 +472,19 @@ function checkDeviceType(types = ['os', 'browser', 'device'], return_string = fa
         }
         return 'other';
     }
+    const platform = 'web';
     const result = {
         os: getOS(),
         browser: getBrowser(),
-        device: getDevice()
+        device: getDevice(),
+        platform: platform
     };
-    if (return_string) {
-        if (types.length === 1) {
-            return result[types[0]];
-        }
+    if (typeof types === 'string') {
+        return result[types];
     }
-    return result;
-}
-
-//将importObject中的值更新到object中，如果importObject中的值为空，则不更新
-function updateObjectFromImport(importObject, object) {
-    for (let key in object) {
-        if (importObject.hasOwnProperty(key)) {
-            if (typeof object[key] === 'object' && typeof importObject[key] === 'object') {
-                updateObjectFromImport(importObject[key], object[key]);
-            }
-            else {
-                //再根据是否为空来判断是否要更新
-                if (checkNotNull(importObject[key])) {
-                    object[key] = importObject[key];
-                }
-            }
-        }
+    else {
+        return shakeObject(result, types);
     }
-    return object;
 }
 
 // 去除数组中重复的对象，将 length 大的数组保留，length 小的数组去掉
@@ -492,12 +500,42 @@ function formatNumber(value, decimal = 2) {
     return (Math.floor(value * decimalValue) / decimalValue).toString();
 }
 
+function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
+    const res = uni.getSystemInfoSync();
+    if (res.uniPlatform === 'web') {
+        return checkDeviceType$1(types);
+    }
+    else {
+        //这个之后还要细微修改
+        const deviceInfo = {
+            os: res.osName,
+            browser: res.browserName,
+            device: res.deviceType,
+            platform: res.uniPlatform
+        };
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        if (deviceInfo.os === 'android' || deviceInfo.os === 'windows') {
+            deviceInfo.browser = 'chrome';
+        }
+        else {
+            deviceInfo.browser = 'safari';
+        }
+        // #endif
+        if (typeof types === 'string') {
+            return deviceInfo[types];
+        }
+        else {
+            return shakeObject(deviceInfo, types);
+        }
+    }
+}
+
 //import * as packageJson from '../package.json'
 //导出自己的名字
 const info = {
     name: 'galanga',
     author: 'censujiang',
-    platform: 'uni-app',
+    type: 'uni-app',
     //version: packageJson.version,
 };
 
