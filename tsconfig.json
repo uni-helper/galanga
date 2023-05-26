@@ -3,6 +3,11 @@
 		"target": "esnext",
 		"module": "esnext",
 		"noImplicitAny": false,
+		"moduleResolution": "node",
+		"baseUrl": "./",
+		"paths": {
+      "galanga": ["@/node_modules/galanga/src/index.ts"],
+    },
 		"rootDir": "./src",
     "outDir": "./esm",
 		"strict":false,

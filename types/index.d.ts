@@ -1,14 +1,8 @@
-//import * as packageJson from '../package.json'
-
-//导出自己的名字
-export const info = {
-  name: 'galanga',
-  author: 'censujiang',
-  platform: 'uni-app',
-  //version: packageJson.version,
-}
-
-//引入并导出所有原有的子模块
+export declare const info: {
+    name: string;
+    author: string;
+    platform: string;
+};
 export { localCookie } from 'galanga';
 export { url } from 'galanga';
 export { checkNull, checkNotNull, strLength, formatBytes, checkPassword, checkEmail } from 'galanga';
