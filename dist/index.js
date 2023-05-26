@@ -1,8 +1,8 @@
 /*!
- * @uni-helper/galanga 0.1.5-test1 (https://github.com/censujiang/galanga)
+ * @uni-helper/galanga 0.1.5-test1 (https://github.com/uni-helper/galanga)
  * API https://censujiang.galanga.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
- * Licensed under Apache License 2.0 (https://github.com/censujiang/galanga/blob/master/LICENSE)
+ * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
  */
 
 //操作cookie的方法
