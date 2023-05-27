@@ -16,7 +16,7 @@ jobs:
           node-version: 18
       - run: npm install -g corepack
       - run: corepack enable
-      - run: npm install --no-frozen-lockfile
+      - run: npm install
       - run: npm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
