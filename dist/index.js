@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.1.6-test6 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.1.6-test7 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)

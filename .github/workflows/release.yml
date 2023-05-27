@@ -17,6 +17,9 @@ jobs:
       - run: npm install -g yarn
       - run: yarn install --immutable
       - run: yarn pack --filename package.tgz
-      - run: yarn publish ./package.tgz --access public
+      - name: Publish to NPM
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: |
+          echo "//registry.npmjs.org/:_authToken=\${NODE_AUTH_TOKEN}" > .npmrc
+          yarn publish ./package.tgz --access public
