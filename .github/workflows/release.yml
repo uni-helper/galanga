@@ -15,10 +15,10 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-          cache: npm
+          cache: pnpm
           registry-url: https://registry.npmjs.org
       - run: corepack enable
-      - run: npm install --no-frozen-lockfile
-      - run: npm publish --access public --no-git-checks
+      - run: pnpm install --no-frozen-lockfile
+      - run: pnpm publish --access public --no-git-checks
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
