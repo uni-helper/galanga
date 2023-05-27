@@ -1,12 +1,12 @@
 /*!
- * @uni-helper/galanga 0.1.7-test1 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.1.7-test2 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
  */
 
 //操作cookie的方法
-const localCookie = {
+const localCookie$1 = {
     getItem: function (sKey) {
         return decodeURIComponent(document.cookie.replace(new RegExp('(?:(?:^|.*;)\\s*' + encodeURIComponent(sKey).replace(/[-.+*]/g, '\\$&') + '\\s*\\=\\s*([^;]*).*$)|^.*$'), '$1')) || null;
     },
@@ -59,26 +59,6 @@ const localCookie = {
             this.removeItem(keys[i]);
         }
     }
-};
-
-const url = {
-    getQuery(name) {
-        const result = window.location.search.match(new RegExp('[?&]' + name + '=([^&]+)', 'i'));
-        if (result == null || result.length < 1) {
-            return '';
-        }
-        return result[1];
-    },
-    getHash(name) {
-        const result = window.location.hash.match(new RegExp('[#&]' + name + '=([^&]+)', 'i'));
-        if (result == null || result.length < 1) {
-            return '';
-        }
-        return result[1];
-    },
-    getPath() {
-        return window.location.pathname;
-    },
 };
 
 // 检查输入的值是否为空
@@ -503,6 +483,61 @@ function formatNumber(value, decimal = 2) {
     const decimalValue = Math.pow(10, decimal);
     return (Math.floor(value * decimalValue) / decimalValue).toString();
 }
+
+const localCookie = {
+    getItem: (sKey) => {
+        let result = null;
+        // #ifdef H5
+        result = localCookie$1.getItem(sKey);
+        // #endif
+        return result;
+    },
+    setItem: (sKey, sValue, vEnd, sPath, sDomain, bSecure) => {
+        // #ifdef H5
+        localCookie$1.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure);
+        // #endif
+    },
+    removeItem: (sKey, sPath, sDomain) => {
+        // #ifdef H5
+        localCookie$1.removeItem(sKey, sPath, sDomain);
+        // #endif
+    },
+    hasItem: (sKey) => {
+        let result = false;
+        // #ifdef H5
+        result = localCookie$1.hasItem(sKey);
+        // #endif
+        return result;
+    },
+    keys: () => {
+        let result = [];
+        // #ifdef H5
+        result = localCookie$1.keys();
+        // #endif
+        return result;
+    },
+    clear: () => {
+        // #ifdef H5
+        localCookie$1.clear();
+        // #endif
+    }
+};
+
+const url = {
+    getPath: () => {
+        const uniRouter = getCurrentPages();
+        const currentRoute = uniRouter[uniRouter.length - 1];
+        return '/' + currentRoute.route;
+    },
+    getQuery: (value) => {
+        const uniRouter = getCurrentPages();
+        const currentRoute = uniRouter[uniRouter.length - 1];
+        return currentRoute.$page.options[value];
+    },
+    getHash: () => {
+        return undefined;
+    }
+};
 
 const clipboard = {
     read: async (onlyString = true) => {
