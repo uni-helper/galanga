@@ -14,9 +14,9 @@ jobs:
       - uses: actions/setup-node@v3
         with:
           node-version: 18
-      - run: npm install -g corepack
-      - run: corepack enable
-      - run: npm install
-      - run: npm publish --access public --no-git-checks
+      - run: npm install -g yarn
+      - run: yarn install --immutable
+      - run: yarn pack --filename package.tgz
+      - run: yarn publish ./package.tgz --access public --no-git-tag-version --no-commit-hooks --no-verify
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
