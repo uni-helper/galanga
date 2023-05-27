@@ -21,5 +21,8 @@ shell.rm('-rf', 'node_modules/.yarn-integrity');
 //安装demo/node_modules
 shell.exec('yarn');
 
+//删除demo/node_modules/@uni-helper/galanga/.git的所有文件
+shell.rm('-rf', 'node_modules/@uni-helper/galanga/.git');
+
 //启动demo
 shell.exec('yarn run dev');
