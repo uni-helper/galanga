@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const deviceInfo = ref(checkDeviceType())
+
 </script>
 
 <template>
