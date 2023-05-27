@@ -2289,9 +2289,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@uni-helper/galanga@file:..":
-  version "0.1.5-test1"
+  version "0.1.6-test2"
   dependencies:
-    galanga "^0.1.6"
+    galanga "^0.1.6-fix.1"
 
 "@uni-helper/pages-json-schema@^0.2.1":
   version "0.2.1"
@@ -4382,10 +4382,10 @@ functions-have-names@^1.2.2, functions-have-names@^1.2.3:
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-galanga@^0.1.6:
-  version "0.1.6"
-  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.6.tgz#00047864f0b130e327e374f78583923d8de22803"
-  integrity sha512-0Xa7qRx2VcpO7tmmzQ6PcUnDO2Rx55+R6Lc8H2GyOQqlZ09K8cGqxI2pDRyVRdmStQ6sIRQwog/VOumSjBWLBQ==
+galanga@^0.1.6-fix.1:
+  version "0.1.6-fix.1"
+  resolved "https://registry.yarnpkg.com/galanga/-/galanga-0.1.6-fix.1.tgz#40d4b238f2dd0cc6e083558814bc80e74d8b63e9"
+  integrity sha512-TcqKmkbo1NNytHk5GMQgypBPUMrwka/UEVCNObdbaVOq98ql+XZ5OOngEfqA3fXuarJStGNOVRJGVIlCrTUdXw==
 
 generic-names@^4.0.0:
   version "4.0.0"
@@ -6798,10 +6798,10 @@ vary@~1.1.2:
   resolved "https://registry.npmjs.org/vary/-/vary-1.1.2.tgz#2299f02c6ded30d4a5961b0b9f74524a18f634fc"
   integrity sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==
 
-vite@4.3.8:
-  version "4.3.8"
-  resolved "https://registry.npmjs.org/vite/-/vite-4.3.8.tgz#70cd6a294ab52d7fb8f37f5bc63d117dd19e9918"
-  integrity sha512-uYB8PwN7hbMrf4j1xzGDk/lqjsZvCDbt/JC5dyfxc19Pg8kRm14LinK/uq+HSLNswZEoKmweGdtpbnxRtrAXiQ==
+vite@4.3.9:
+  version "4.3.9"
+  resolved "https://registry.yarnpkg.com/vite/-/vite-4.3.9.tgz#db896200c0b1aa13b37cdc35c9e99ee2fdd5f96d"
+  integrity sha512-qsTNZjO9NoJNW7KnOrgYwczm0WctJ8m/yqYAMAK9Lxt4SoySUfS5S8ia9K7JHpa3KEeMfyF8LoJ3c5NeBJy6pg==
   dependencies:
     esbuild "^0.17.5"
     postcss "^8.4.23"
