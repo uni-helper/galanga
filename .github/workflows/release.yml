@@ -12,11 +12,12 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: pnpm/action-setup@v2
+        with:
+          pnpm-version: latest
       - uses: actions/setup-node@v3
         with:
           node-version: 18
           cache: pnpm
-          pnpm-version: latest
           registry-url: https://registry.npmjs.org
       - run: corepack enable
       - run: pnpm install --no-frozen-lockfile
