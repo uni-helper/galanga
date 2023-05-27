@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.1.6-test7 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.1.7-test1 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -184,7 +184,7 @@ function checkEmail(email) {
 }
 
 //通知权限相关
-const notificationPermission = {
+const notificationPermission$1 = {
     //判断是否有通知权限
     check: () => {
         //判断浏览器是否支持Notification
@@ -205,7 +205,7 @@ const notificationPermission = {
     },
     //请求通知权限
     request: async () => {
-        let check = notificationPermission.check();
+        let check = notificationPermission$1.check();
         if (check == null) {
             const info = await Notification.requestPermission();
             if (info === 'granted') {
@@ -221,7 +221,7 @@ const notificationPermission = {
     }
 };
 // 剪切板权限相关
-const clipboardPermission = {
+const clipboardPermission$1 = {
     // 判断是否有剪切板权限
     check: async () => {
         // 判断浏览器是否支持Clipboard
@@ -250,14 +250,14 @@ const clipboardPermission = {
     },
     // 请求剪切板权限
     request: async () => {
-        let check = await clipboardPermission.check();
+        let check = await clipboardPermission$1.check();
         if (check === null) {
             try {
                 await navigator.clipboard.readText();
                 return true;
             }
             catch {
-                check = await clipboardPermission.check();
+                check = await clipboardPermission$1.check();
                 return check === true;
             }
         }
@@ -267,7 +267,7 @@ const clipboardPermission = {
     }
 };
 //位置权限相关
-const locationPermission = {
+const locationPermission$1 = {
     //判断是否有位置权限
     check: async () => {
         //判断浏览器是否支持Geolocation
@@ -296,14 +296,14 @@ const locationPermission = {
     },
     //请求位置权限
     request: async () => {
-        let check = await locationPermission.check();
+        let check = await locationPermission$1.check();
         if (check === null) {
             try {
                 await navigator.geolocation.getCurrentPosition(() => { });
                 return true;
             }
             catch {
-                check = await locationPermission.check();
+                check = await locationPermission$1.check();
                 return check === true;
             }
         }
@@ -342,9 +342,9 @@ function shakeObject(object, array) {
     return result;
 }
 
-const clipboard = {
+const clipboard$1 = {
     read: async (onlyString = true) => {
-        if (await clipboardPermission.request() == true) {
+        if (await clipboardPermission$1.request() == true) {
             if (onlyString) {
                 const text = await navigator.clipboard.readText();
                 return text;
@@ -358,13 +358,10 @@ const clipboard = {
             return null;
         }
     },
-    write: async (value, onlyString = true) => {
-        if (await clipboardPermission.request() == true) {
+    write: async (value) => {
+        if (await clipboardPermission$1.request() == true) {
             try {
-                if (onlyString) {
-                    if (typeof value !== 'string') {
-                        value = JSON.stringify(value);
-                    }
+                if (typeof value === 'string') {
                     await navigator.clipboard.writeText(value);
                 }
                 else {
@@ -473,14 +470,21 @@ function checkDeviceType$1(types = ['os', 'browser', 'device', 'platform']) {
         return 'other';
     }
     const platform = 'web';
+    let originTypes;
+    if (typeof types === 'string') {
+        types = [types];
+        originTypes = types[0];
+    }
+    //定义一个result对象，用于存储检测结果
+    //通过检查types数组，来确定需要获取的信息，不需要的信息不获取也不存储空置（直接跳过）
     const result = {
-        os: getOS(),
-        browser: getBrowser(),
-        device: getDevice(),
-        platform: platform
+        os: types.includes('os') ? getOS() : '',
+        browser: types.includes('browser') ? getBrowser() : '',
+        device: types.includes('device') ? getDevice() : '',
+        platform: types.includes('platform') ? platform : '',
     };
     if (typeof types === 'string') {
-        return result[types];
+        return result[originTypes];
     }
     else {
         return shakeObject(result, types);
@@ -500,6 +504,42 @@ function formatNumber(value, decimal = 2) {
     return (Math.floor(value * decimalValue) / decimalValue).toString();
 }
 
+const clipboard = {
+    read: async (onlyString = true) => {
+        let result;
+        // #ifdef H5
+        result = await clipboard$1.read(onlyString);
+        // #endif
+        // #ifndef H5
+        result = await uni.getClipboardData().then((res) => {
+            if (onlyString && typeof res.data !== 'string') {
+                return null;
+            }
+            return res.data;
+        }).catch(() => {
+            return null;
+        });
+        // #endif
+        return result;
+    },
+    write: async (value) => {
+        let result;
+        // #ifdef H5
+        result = await clipboard$1.write(value);
+        // #endif
+        // #ifndef H5
+        result = await uni.setClipboardData({
+            data: value,
+            showToast: false,
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    }
+};
 function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
     let result;
     // #ifdef H5
@@ -534,6 +574,176 @@ function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
     }
     // #endif
     return result;
+}
+
+// #ifdef APP-PLUS
+const isIOS = (plus.os.name == "iOS");
+// #endif
+// 通知权限相关
+const notificationPermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await notificationPermission$1.check();
+        // #endif
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        result = await uni.getSetting().then((res) => {
+            if (res.subscriptionsSetting.mainSwitch === true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            const UIApplication = plus.ios.import("UIApplication");
+            const app = UIApplication.sharedApplication();
+            let enabledTypes = 0;
+            if (app.currentUserNotificationSettings) {
+                const settings = app.currentUserNotificationSettings();
+                enabledTypes = settings.plusGetAttribute("types");
+                console.log("enabledTypes1:" + enabledTypes);
+                if (enabledTypes == 0) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+                plus.ios.deleteObject(settings);
+            }
+            else {
+                enabledTypes = app.enabledRemoteNotificationTypes();
+                if (enabledTypes == 0) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+            }
+            plus.ios.deleteObject(app);
+            plus.ios.deleteObject(UIApplication);
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.ACCESS_NOTIFICATION_POLICY');
+        }
+        // #endif
+        return result;
+    },
+};
+// 剪切板权限相关
+const clipboardPermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await clipboardPermission$1.check();
+        // #endif
+        // #ifndef H5
+        result = await uni.getClipboardData().then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await clipboardPermission$1.request();
+        // #endif
+        // #ifndef H5
+        result = await clipboardPermission.check().then((check) => {
+            if (checkNull(check)) {
+                return false;
+            }
+            return check;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    }
+};
+// 位置权限相关
+const locationPermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await locationPermission$1.check();
+        // #endif
+        // #ifndef H5
+        result = await uni.getLocation().then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await locationPermission$1.request();
+        // #endif
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        result = await locationPermission.check().then((check) => {
+            if (checkNull(check)) {
+                return false;
+            }
+            return check;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            const locationManger = plus.ios.import("CLLocationManager");
+            const status = locationManger.authorizationStatus();
+            result = (status != 2);
+            plus.ios.deleteObject(locationManger);
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+        }
+        // #endif
+        return result;
+    }
+};
+// Android权限查询
+async function requestAndroidPermission(permissionID) {
+    return new Promise((resolve, reject) => {
+        plus.android.requestPermissions([permissionID], // 理论上支持多个权限同时查询，但实际上本函数封装只处理了一个权限的情况。有需要的可自行扩展封装
+        function (resultObj) {
+            let result = false;
+            for (var i = 0; i < resultObj.granted.length; i++) {
+                //var grantedPermission = resultObj.granted[i];
+                //console.log('已获取的权限：' + grantedPermission);
+                result = true;
+            }
+            for (var i = 0; i < resultObj.deniedPresent.length; i++) {
+                //var deniedPresentPermission = resultObj.deniedPresent[i];
+                //console.log('拒绝本次申请的权限：' + deniedPresentPermission);
+                result = false;
+            }
+            for (var i = 0; i < resultObj.deniedAlways.length; i++) {
+                //var deniedAlwaysPermission = resultObj.deniedAlways[i];
+                //console.log('永久拒绝申请的权限：' + deniedAlwaysPermission);
+                result = false;
+            }
+            resolve(result);
+            // 若所需权限被拒绝,则打开APP设置界面,可以在APP设置界面打开相应权限
+            // if (result != 1) {
+            // gotoAppPermissionSetting()
+            // }
+        }, function (error) {
+            //console.log('申请权限错误：' + error.code + " = " + error.message);
+            resolve(false);
+        });
+    });
 }
 
 //import * as packageJson from '../package.json'

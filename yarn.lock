@@ -506,9 +506,9 @@
   resolved "https://registry.yarnpkg.com/@pkgjs/parseargs/-/parseargs-0.11.0.tgz#a77ea742fab25775145434eb1d2328cf5013ac33"
   integrity sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==
 
-"@rollup/plugin-node-resolve@15.0.2":
+"@rollup/plugin-node-resolve@^15.0.2":
   version "15.0.2"
-  resolved "https://registry.yarnpkg.com/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.0.2.tgz#8183a80c2cbf7b471f5ac86b16747997f3b5d185"
+  resolved "https://registry.npmjs.org/@rollup/plugin-node-resolve/-/plugin-node-resolve-15.0.2.tgz#8183a80c2cbf7b471f5ac86b16747997f3b5d185"
   integrity sha512-Y35fRGUjC3FaurG722uhUuG8YHOJRJQbI6/CkbRkdPotSpDj9NtIN85z1zrcyDcCQIW4qp5mgG72U+gJ0TAFEg==
   dependencies:
     "@rollup/pluginutils" "^5.0.1"
@@ -1600,10 +1600,10 @@ function-bind@^1.1.1:
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-galanga@^0.1.6-fix.1:
-  version "0.1.6-fix.1"
-  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.6-fix.1.tgz#40d4b238f2dd0cc6e083558814bc80e74d8b63e9"
-  integrity sha512-TcqKmkbo1NNytHk5GMQgypBPUMrwka/UEVCNObdbaVOq98ql+XZ5OOngEfqA3fXuarJStGNOVRJGVIlCrTUdXw==
+galanga@^0.1.7:
+  version "0.1.7"
+  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.7.tgz#21b77f53fd3674dd4ed99320ce598f75dfdb3bbe"
+  integrity sha512-WTHfDbKmoRAh4MT+z5yMMOOb3CrvbQ0kXXbAIKvnqJnu7A0sw7QuMVWJh3yb2IWDy1U3acm4mL9lgn+urCIerw==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"

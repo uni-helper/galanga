@@ -1,6 +1,43 @@
 import * as origin from 'galanga'
 declare const uni: any
 
+export const clipboard = {
+  read: async (onlyString = true) => {
+    let result: string | ClipboardItems | null
+    // #ifdef H5
+    result = await origin.clipboard.read(onlyString)
+    // #endif
+    // #ifndef H5
+    result = await uni.getClipboardData().then((res) => {
+      if (onlyString && typeof res.data !== 'string') {
+        return null
+      }
+      return res.data
+    }).catch(() => {
+      return null
+    })
+    // #endif
+    return result
+  },
+  write: async (value: any) => {
+    let result: boolean
+    // #ifdef H5
+    result = await origin.clipboard.write(value)
+    // #endif
+    // #ifndef H5
+    result = await uni.setClipboardData({
+      data: value,
+      showToast: false,
+    }).then(() => {
+      return true
+    }).catch(() => {
+      return false
+    })
+    // #endif
+    return result
+  }
+}
+
 interface DeviceInfo {
   os: string;
   browser: string;

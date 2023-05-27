@@ -1,4 +1,40 @@
 import * as origin from 'galanga';
+export const clipboard = {
+    read: async (onlyString = true) => {
+        let result;
+        // #ifdef H5
+        result = await origin.clipboard.read(onlyString);
+        // #endif
+        // #ifndef H5
+        result = await uni.getClipboardData().then((res) => {
+            if (onlyString && typeof res.data !== 'string') {
+                return null;
+            }
+            return res.data;
+        }).catch(() => {
+            return null;
+        });
+        // #endif
+        return result;
+    },
+    write: async (value) => {
+        let result;
+        // #ifdef H5
+        result = await origin.clipboard.write(value);
+        // #endif
+        // #ifndef H5
+        result = await uni.setClipboardData({
+            data: value,
+            showToast: false,
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    }
+};
 export function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
     let result;
     // #ifdef H5
