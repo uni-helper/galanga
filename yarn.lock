@@ -1600,10 +1600,10 @@ function-bind@^1.1.1:
   resolved "https://registry.npmjs.org/function-bind/-/function-bind-1.1.1.tgz#a56899d3ea3c9bab874bb9773b7c5ede92f4895d"
   integrity sha512-yIovAzMX49sF8Yl58fSCWJ5svSLuaibPxXQJFLmBObTuCr0Mf1KiPopGM9NiFjiYBCbfaa2Fh6breQ6ANVTI0A==
 
-galanga@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.7.tgz#21b77f53fd3674dd4ed99320ce598f75dfdb3bbe"
-  integrity sha512-WTHfDbKmoRAh4MT+z5yMMOOb3CrvbQ0kXXbAIKvnqJnu7A0sw7QuMVWJh3yb2IWDy1U3acm4mL9lgn+urCIerw==
+galanga@^0.1.7-fix1:
+  version "0.1.7-fix1"
+  resolved "https://registry.npmjs.org/galanga/-/galanga-0.1.7-fix1.tgz#23188d0387c96603a977c1d880c70aa277d9291b"
+  integrity sha512-TnxcVPwQ/VMUDwZ3xfZ4UzJDaXe10OXDi80DNugXZq9q5l1ydJWtO3qMb6QTIoIlhMInN5oiOeOqmwh23TBZ5g==
 
 gensync@^1.0.0-beta.2:
   version "1.0.0-beta.2"
