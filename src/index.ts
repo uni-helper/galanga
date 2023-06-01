@@ -13,6 +13,7 @@ export { checkNull, checkNotNull, strLength, formatBytes, checkPassword, checkEm
 export { updateObjectFromImport } from 'galanga';
 export { filterUniqueByProperty } from 'galanga';
 export { formatNumber } from 'galanga';
+export { afterTime } from 'galanga';
 
 //导出自己的子模块
 export { localCookie } from './cookie';

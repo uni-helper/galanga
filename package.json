@@ -1,6 +1,6 @@
 {
   "name": "@uni-helper/galanga",
-  "version": "0.1.7-test3",
+  "version": "0.1.8-test1",
   "description": "JS common function library(UNI-APP version of Galanga)",
   "main": "esm/index.js",
   "jsnext:main": "esm/index.js",
@@ -70,6 +70,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "galanga": "^0.1.7-fix1"
+    "galanga": "^0.1.8"
   }
 }

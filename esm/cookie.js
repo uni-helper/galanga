@@ -8,14 +8,18 @@ export const localCookie = {
         return result;
     },
     setItem: (sKey, sValue, vEnd, sPath, sDomain, bSecure) => {
+        let result = false;
         // #ifdef H5
-        origin.localCookie.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure);
+        result = origin.localCookie.setItem(sKey, sValue, vEnd, sPath, sDomain, bSecure);
         // #endif
+        return result;
     },
     removeItem: (sKey, sPath, sDomain) => {
+        let result = false;
         // #ifdef H5
-        origin.localCookie.removeItem(sKey, sPath, sDomain);
+        result = origin.localCookie.removeItem(sKey, sPath, sDomain);
         // #endif
+        return result;
     },
     hasItem: (sKey) => {
         let result = false;
