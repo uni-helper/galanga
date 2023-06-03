@@ -26,3 +26,9 @@ export const url = {
         currentRoute.$page.options[key] = value;
     }
 };
+//获取上一页的url
+export function getPreURL() {
+    const uniRouter = getCurrentPages();
+    const prevRoute = uniRouter[uniRouter.length - 2];
+    return '/' + prevRoute.route;
+}
