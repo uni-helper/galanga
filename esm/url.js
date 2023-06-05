@@ -1,7 +1,10 @@
 export const url = {
-    getPath: () => {
+    getPath: (isFullPath = false) => {
         const uniRouter = getCurrentPages();
         const currentRoute = uniRouter[uniRouter.length - 1];
+        if (isFullPath) {
+            //return currentRoute.route;
+        }
         return '/' + currentRoute.route;
     },
     getQuery: (value) => {

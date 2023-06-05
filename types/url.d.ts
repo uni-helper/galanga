@@ -1,5 +1,5 @@
 export declare const url: {
-    getPath: () => string;
+    getPath: (isFullPath?: boolean) => string;
     getQuery: (value: string) => any;
     getHash: () => any;
     setHash: (value?: string) => boolean;

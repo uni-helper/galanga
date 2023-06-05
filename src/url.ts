@@ -1,10 +1,14 @@
 declare const getCurrentPages: () => any[];
 
 export const url = {
-  getPath: () => {
+  getPath: (isFullPath =false) => {
     const uniRouter = getCurrentPages();
     const currentRoute = uniRouter[uniRouter.length - 1];
-    return '/' + currentRoute.route;
+    if(isFullPath) {
+      return currentRoute.$page.fullPath;
+    }else{
+      return '/' + currentRoute.route;
+    }
   },
   getQuery: (value: string) => {
     const uniRouter = getCurrentPages();
