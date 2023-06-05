@@ -6,3 +6,4 @@ export declare const url: {
     setPath: (value: string) => void;
     setQuery: (key: string, value: string) => void;
 };
+export declare function getPreURL(): string;

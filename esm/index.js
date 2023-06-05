@@ -14,6 +14,6 @@ export { formatNumber } from 'galanga';
 export { afterTime } from 'galanga';
 //导出自己的子模块
 export { localCookie } from './cookie';
-export { url } from './url';
+export { url, getPreURL } from './url';
 export { checkDeviceType, clipboard } from './device';
 export { notificationPermission, clipboardPermission, locationPermission } from './permission';

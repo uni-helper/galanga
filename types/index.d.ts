@@ -9,6 +9,6 @@ export { filterUniqueByProperty } from 'galanga';
 export { formatNumber } from 'galanga';
 export { afterTime } from 'galanga';
 export { localCookie } from './cookie';
-export { url } from './url';
+export { url, getPreURL } from './url';
 export { checkDeviceType, clipboard } from './device';
 export { notificationPermission, clipboardPermission, locationPermission } from './permission';
