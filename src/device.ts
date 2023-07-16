@@ -78,3 +78,55 @@ export function checkDeviceType(types: string[] | string = ['os', 'browser', 'de
   return result
 }
 
+type shareType = 'system' | 'qq' | 'weixin' | 'none' | 'sinaweibo'
+
+interface ShareInfoAPP {
+  provider: shareType;
+  summary: string;
+  title: string;
+  href?: string;
+  type: number;
+}
+
+export function share({
+  content = 'none',
+  title = 'galanga',
+  url = '',
+  type = 'system' as shareType,
+} = {}) {
+  // #ifdef H5
+  origin.share({
+    content,
+    title,
+    url,
+  })
+  // #endif
+  // # ifndef APP-PLUS
+  if (type === 'system') {
+    uni.shareWithSystem({
+      summary: title + ' ' + content,
+      href: url,
+    })
+  } else {
+    let shareInfo: ShareInfoAPP = {
+      provider: type,
+      summary: title,
+      title: title,
+      type: 1,
+    }
+    if (shareInfo.provider === 'sinaweibo') {
+      shareInfo.type = 0
+    }
+    if (origin.checkNotNull(url)) {
+      shareInfo.href = url
+    }
+    uni.share(shareInfo)
+  }
+  // #endif
+  // #ifndef H5 || APP-PLUS
+  uni.showShareMenu({
+    title: title,
+    content: origin.checkNull(url) ? content : content + '\n' + url,
+  })
+  // #endif
+}

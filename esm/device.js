@@ -70,3 +70,41 @@ export function checkDeviceType(types = ['os', 'browser', 'device', 'platform'])
     // #endif
     return result;
 }
+export function share({ content = 'none', title = 'galanga', url = '', type = 'system', } = {}) {
+    // #ifdef H5
+    origin.share({
+        content,
+        title,
+        url,
+    });
+    // #endif
+    // # ifndef APP-PLUS
+    if (type === 'system') {
+        uni.shareWithSystem({
+            summary: title + ' ' + content,
+            href: url,
+        });
+    }
+    else {
+        let shareInfo = {
+            provider: type,
+            summary: title,
+            title: title,
+            type: 1,
+        };
+        if (shareInfo.provider === 'sinaweibo') {
+            shareInfo.type = 0;
+        }
+        if (origin.checkNotNull(url)) {
+            shareInfo.href = url;
+        }
+        uni.share(shareInfo);
+    }
+    // #endif
+    // #ifndef H5 || APP-PLUS
+    uni.showShareMenu({
+        title: title,
+        content: origin.checkNull(url) ? content : content + '\n' + url,
+    });
+    // #endif
+}
