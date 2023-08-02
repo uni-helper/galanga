@@ -93,12 +93,14 @@ export function share({
   title = 'galanga',
   url = '',
   type = 'system' as shareType,
+  files = [] as File[],
 } = {}) {
   // #ifdef H5
   origin.share({
     content,
     title,
     url,
+    files,
   })
   // #endif
   // # ifndef APP-PLUS

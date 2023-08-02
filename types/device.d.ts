@@ -10,10 +10,11 @@ interface DeviceInfo {
 }
 export declare function checkDeviceType(types?: string[] | string): DeviceInfo | string | object;
 type shareType = 'system' | 'qq' | 'weixin' | 'none' | 'sinaweibo';
-export declare function share({ content, title, url, type, }?: {
+export declare function share({ content, title, url, type, files, }?: {
     content?: string;
     title?: string;
     url?: string;
     type?: shareType;
+    files?: File[];
 }): void;
 export {};

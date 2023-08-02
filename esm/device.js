@@ -70,12 +70,13 @@ export function checkDeviceType(types = ['os', 'browser', 'device', 'platform'])
     // #endif
     return result;
 }
-export function share({ content = 'none', title = 'galanga', url = '', type = 'system', } = {}) {
+export function share({ content = 'none', title = 'galanga', url = '', type = 'system', files = [], } = {}) {
     // #ifdef H5
     origin.share({
         content,
         title,
         url,
+        files,
     });
     // #endif
     // # ifndef APP-PLUS
