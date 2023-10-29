@@ -1,6 +1,6 @@
 {
   "name": "@uni-helper/galanga",
-  "version": "0.2.4",
+  "version": "0.2.4-fix1",
   "description": "JS common function library(UNI-APP version of Galanga)",
   "main": "esm/index.js",
   "jsnext:main": "esm/index.js",

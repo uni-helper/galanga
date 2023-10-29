@@ -110,7 +110,7 @@ export function share({
     files,
   })
   // #endif
-  // # ifndef APP-PLUS
+  // #ifndef APP-PLUS
   if (type === 'system') {
     uni.shareWithSystem({
       summary: title + ' ' + content,
