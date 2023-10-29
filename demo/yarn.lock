@@ -2289,9 +2289,9 @@
     eslint-visitor-keys "^3.3.0"
 
 "@uni-helper/galanga@file:..":
-  version "0.1.6-test2"
+  version "0.1.8-test1"
   dependencies:
-    galanga "^0.1.6-fix.1"
+    galanga "^0.2.0"
 
 "@uni-helper/pages-json-schema@^0.2.1":
   version "0.2.1"
@@ -4382,10 +4382,10 @@ functions-have-names@^1.2.2, functions-have-names@^1.2.3:
   resolved "https://registry.npmjs.org/functions-have-names/-/functions-have-names-1.2.3.tgz#0404fe4ee2ba2f607f0e0ec3c80bae994133b834"
   integrity sha512-xckBUXyTIqT97tq2x2AMb+g163b5JFysYk0x4qxNFwbfQkmNZoiRHb6sPzI9/QV33WeuvVYBUIiD4NzNIyqaRQ==
 
-galanga@^0.1.6-fix.1:
-  version "0.1.6-fix.1"
-  resolved "https://registry.yarnpkg.com/galanga/-/galanga-0.1.6-fix.1.tgz#40d4b238f2dd0cc6e083558814bc80e74d8b63e9"
-  integrity sha512-TcqKmkbo1NNytHk5GMQgypBPUMrwka/UEVCNObdbaVOq98ql+XZ5OOngEfqA3fXuarJStGNOVRJGVIlCrTUdXw==
+galanga@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/galanga/-/galanga-0.2.0.tgz#4fc997c763fa51fff44c2ea127f36b139f661a46"
+  integrity sha512-oqrtCQUxNK2KsPhk3QWolBNPrfj424+ROVngi3cZFaXJyVylQiIIEVtfgPACAlM/UH0MVYA5VKlvWA5bfhi/Yg==
 
 generic-names@^4.0.0:
   version "4.0.0"
