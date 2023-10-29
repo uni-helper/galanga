@@ -1,9 +1,9 @@
-import * as origin from 'galanga';
+import { clipboard as clipboardO, checkDeviceType as checkDeviceTypeO, checkNotNull, checkNull, share as shareO, shakeObject } from 'galanga';
 export const clipboard = {
     read: async (onlyString = true) => {
         let result;
         // #ifdef H5
-        result = await origin.clipboard.read(onlyString);
+        result = await clipboardO.read(onlyString);
         // #endif
         // #ifndef H5
         result = await uni.getClipboardData().then((res) => {
@@ -20,7 +20,7 @@ export const clipboard = {
     write: async (value) => {
         let result;
         // #ifdef H5
-        result = await origin.clipboard.write(value);
+        result = await clipboardO.write(value);
         // #endif
         // #ifndef H5
         result = await uni.setClipboardData({
@@ -38,12 +38,12 @@ export const clipboard = {
 export function checkDeviceType(types = ['os', 'browser', 'device', 'platform']) {
     let result;
     // #ifdef H5
-    result = origin.checkDeviceType(types);
+    result = checkDeviceTypeO(types);
     // #endif
     // #ifndef H5
     const res = uni.getSystemInfoSync();
     if (res.uniPlatform === 'web') {
-        return origin.checkDeviceType(types);
+        return checkDeviceTypeO(types);
     }
     else {
         const deviceInfo = {
@@ -64,7 +64,7 @@ export function checkDeviceType(types = ['os', 'browser', 'device', 'platform'])
             result = deviceInfo[types];
         }
         else {
-            result = origin.shakeObject(deviceInfo, types);
+            result = shakeObject(deviceInfo, types);
         }
     }
     // #endif
@@ -72,7 +72,7 @@ export function checkDeviceType(types = ['os', 'browser', 'device', 'platform'])
 }
 export function share({ content = 'none', title = 'galanga', url = '', type = 'system', files = [], } = {}) {
     // #ifdef H5
-    origin.share({
+    shareO({
         content,
         title,
         url,
@@ -96,7 +96,7 @@ export function share({ content = 'none', title = 'galanga', url = '', type = 's
         if (shareInfo.provider === 'sinaweibo') {
             shareInfo.type = 0;
         }
-        if (origin.checkNotNull(url)) {
+        if (checkNotNull(url)) {
             shareInfo.href = url;
         }
         uni.share(shareInfo);
@@ -105,7 +105,7 @@ export function share({ content = 'none', title = 'galanga', url = '', type = 's
     // #ifndef H5 || APP-PLUS
     uni.showShareMenu({
         title: title,
-        content: origin.checkNull(url) ? content : content + '\n' + url,
+        content: checkNull(url) ? content : content + '\n' + url,
     });
     // #endif
 }

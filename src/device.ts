@@ -1,11 +1,18 @@
-import * as origin from 'galanga'
+import {
+  clipboard as clipboardO,
+  checkDeviceType as checkDeviceTypeO,
+  checkNotNull,
+  checkNull,
+  share as shareO,
+  shakeObject
+} from 'galanga'
 declare const uni: any
 
 export const clipboard = {
   read: async (onlyString = true) => {
     let result: string | ClipboardItems | null
     // #ifdef H5
-    result = await origin.clipboard.read(onlyString)
+    result = await clipboardO.read(onlyString)
     // #endif
     // #ifndef H5
     result = await uni.getClipboardData().then((res) => {
@@ -22,7 +29,7 @@ export const clipboard = {
   write: async (value: any) => {
     let result: boolean
     // #ifdef H5
-    result = await origin.clipboard.write(value)
+    result = await clipboardO.write(value)
     // #endif
     // #ifndef H5
     result = await uni.setClipboardData({
@@ -48,12 +55,12 @@ interface DeviceInfo {
 export function checkDeviceType(types: string[] | string = ['os', 'browser', 'device', 'platform']): DeviceInfo | string | object {
   let result: DeviceInfo | string | object
   // #ifdef H5
-  result = origin.checkDeviceType(types) as DeviceInfo | string | object
+  result = checkDeviceTypeO(types) as DeviceInfo | string | object
   // #endif
   // #ifndef H5
   const res = uni.getSystemInfoSync()
   if (res.uniPlatform === 'web') {
-    return origin.checkDeviceType(types) as DeviceInfo | string | object
+    return checkDeviceTypeO(types) as DeviceInfo | string | object
   } else {
     const deviceInfo: DeviceInfo = {
       os: res.osName,
@@ -71,7 +78,7 @@ export function checkDeviceType(types: string[] | string = ['os', 'browser', 'de
     if (typeof types === 'string') {
       result = deviceInfo[types]
     } else {
-      result = origin.shakeObject(deviceInfo, types);
+      result = shakeObject(deviceInfo, types);
     }
   }
   // #endif
@@ -96,7 +103,7 @@ export function share({
   files = [] as File[],
 } = {}) {
   // #ifdef H5
-  origin.share({
+  shareO({
     content,
     title,
     url,
@@ -119,7 +126,7 @@ export function share({
     if (shareInfo.provider === 'sinaweibo') {
       shareInfo.type = 0
     }
-    if (origin.checkNotNull(url)) {
+    if (checkNotNull(url)) {
       shareInfo.href = url
     }
     uni.share(shareInfo)
@@ -128,7 +135,7 @@ export function share({
   // #ifndef H5 || APP-PLUS
   uni.showShareMenu({
     title: title,
-    content: origin.checkNull(url) ? content : content + '\n' + url,
+    content: checkNull(url) ? content : content + '\n' + url,
   })
   // #endif
 }
