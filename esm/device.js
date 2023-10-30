@@ -79,7 +79,7 @@ export function share({ content = 'none', title = 'galanga', url = '', type = 's
         files,
     });
     // #endif
-    // #ifndef APP-PLUS
+    // #ifdef APP-PLUS
     if (type === 'system') {
         uni.shareWithSystem({
             summary: title + ' ' + content,
