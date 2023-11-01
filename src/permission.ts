@@ -55,10 +55,50 @@ export const notificationPermission = {
     // #endif
     return result
   },
-  request: async() =>{
+  request: async () => {
     let result: boolean
     // #ifdef H5
     result = await origin.notificationPermission.request()
+    // #endif
+    // #ifdef APP-PLUS
+    if (isIOS === true) {
+      const UIApplication = plus.ios.import("UIApplication");
+      const app = UIApplication.sharedApplication();
+      let enabledTypes = 0;
+      if (app.currentUserNotificationSettings) {
+        const settings = app.currentUserNotificationSettings();
+        enabledTypes = settings.plusGetAttribute("types");
+        console.log("enabledTypes1:" + enabledTypes);
+        if (enabledTypes == 0) {
+          result = false;
+        } else {
+          result = true;
+        }
+        plus.ios.deleteObject(settings);
+      } else {
+        enabledTypes = app.enabledRemoteNotificationTypes();
+        if (enabledTypes == 0) {
+          result = false;
+        } else {
+          result = true;
+        }
+      }
+      plus.ios.deleteObject(app);
+      plus.ios.deleteObject(UIApplication);
+    } else {
+      result = await requestAndroidPermission('android.permission.ACCESS_NOTIFICATION_POLICY') as boolean
+    }
+    // #endif
+    // #ifndef H5 || APP-PLUS
+    //小程序暂时没有思路去请求，暂时只做检查
+    result = await notificationPermission.check().then((check) => {
+      if (origin.checkNull(check)) {
+        return false
+      }
+      return check
+    }).catch(() => {
+      return false
+    })
     // #endif
     return result
   }
@@ -106,7 +146,17 @@ export const locationPermission = {
     // #ifdef H5
     result = await origin.locationPermission.check()
     // #endif
-    // #ifndef H5
+    // #ifdef APP-PLUS
+    if (isIOS === true) {
+      const locationManger = plus.ios.import("CLLocationManager");
+      const status = locationManger.authorizationStatus();
+      result = (status != 2)
+      plus.ios.deleteObject(locationManger);
+    } else {
+      result = await requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION') as boolean
+    }
+    // #endif
+    // #ifndef H5 || APP-PLUS
     result = await uni.getLocation().then(() => {
       return true
     }).catch(() => {

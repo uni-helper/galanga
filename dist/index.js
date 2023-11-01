@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.2.5 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.2.5-fix1 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -940,6 +940,57 @@ const notificationPermission = {
         // #endif
         return result;
     },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await notificationPermission$1.request();
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            const UIApplication = plus.ios.import("UIApplication");
+            const app = UIApplication.sharedApplication();
+            let enabledTypes = 0;
+            if (app.currentUserNotificationSettings) {
+                const settings = app.currentUserNotificationSettings();
+                enabledTypes = settings.plusGetAttribute("types");
+                console.log("enabledTypes1:" + enabledTypes);
+                if (enabledTypes == 0) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+                plus.ios.deleteObject(settings);
+            }
+            else {
+                enabledTypes = app.enabledRemoteNotificationTypes();
+                if (enabledTypes == 0) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+            }
+            plus.ios.deleteObject(app);
+            plus.ios.deleteObject(UIApplication);
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.ACCESS_NOTIFICATION_POLICY');
+        }
+        // #endif
+        // #ifndef H5 || APP-PLUS
+        //小程序暂时没有思路去请求，暂时只做检查
+        result = await notificationPermission.check().then((check) => {
+            if (checkNull(check)) {
+                return false;
+            }
+            return check;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    }
 };
 // 剪切板权限相关
 const clipboardPermission = {
@@ -982,7 +1033,18 @@ const locationPermission = {
         // #ifdef H5
         result = await locationPermission$1.check();
         // #endif
-        // #ifndef H5
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            const locationManger = plus.ios.import("CLLocationManager");
+            const status = locationManger.authorizationStatus();
+            result = (status != 2);
+            plus.ios.deleteObject(locationManger);
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+        }
+        // #endif
+        // #ifndef H5 || APP-PLUS
         result = await uni.getLocation().then(() => {
             return true;
         }).catch(() => {
