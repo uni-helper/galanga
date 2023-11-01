@@ -3,12 +3,13 @@ export declare const info: {
     author: string;
     type: string;
 };
-export { checkNull, checkNotNull, strLength, formatBytes, checkPassword, checkEmail } from 'galanga';
+export { checkNull, checkNotNull, strLength, formatBytes, checkPassword, checkEmail, encode62, decode62, getFileNameFromURL, getFileExtFromString, spliceSiteTitle } from 'galanga';
 export { updateObjectFromImport } from 'galanga';
-export { filterUniqueByProperty } from 'galanga';
-export { formatNumber } from 'galanga';
+export { filterUniqueByProperty, arrayFilterUniqueItem } from 'galanga';
+export { formatNumber, formatPercent } from 'galanga';
 export { afterTime } from 'galanga';
+export { sleep } from 'galanga';
 export { localCookie } from './cookie';
 export { url, getPreURL } from './url';
-export { checkDeviceType, clipboard } from './device';
+export { checkDeviceType, clipboard, share } from './device';
 export { notificationPermission, clipboardPermission, locationPermission } from './permission';
