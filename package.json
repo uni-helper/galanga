@@ -70,6 +70,6 @@
     "typescript": "^5.0.4"
   },
   "dependencies": {
-    "galanga": "^0.2.0"
+    "galanga": "0.2.5"
   }
 }

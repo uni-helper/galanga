@@ -15,6 +15,7 @@
 		"declaration": true,
 		"declarationDir": "./types",
 		"removeComments": false,
+		"allowSyntheticDefaultImports": true,
 	},
 	"include": [
 		"src//*.ts"
