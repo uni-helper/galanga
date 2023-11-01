@@ -55,6 +55,13 @@ export const notificationPermission = {
     // #endif
     return result
   },
+  request: async() =>{
+    let result: boolean
+    // #ifdef H5
+    result = await origin.notificationPermission.request()
+    // #endif
+    return result
+  }
 }
 
 // 剪切板权限相关
