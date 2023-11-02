@@ -17,4 +17,4 @@ export { sleep } from 'galanga';
 export { localCookie } from './cookie';
 export { url, getPreURL } from './url';
 export { checkDeviceType, clipboard, share } from './device';
-export { notificationPermission, clipboardPermission, locationPermission, cameraPermission } from './permission';
+export { notificationPermission, clipboardPermission, locationPermission, cameraPermission, microphonePermission } from './permission';
