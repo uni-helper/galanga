@@ -57,8 +57,13 @@ export const notificationPermission = {
       plus.ios.deleteObject(app);
       plus.ios.deleteObject(UIApplication);
     } else {
-      //首先判断安卓13引入的新权限
-      result = await requestAndroidPermission('android.permission.POST_NOTIFICATIONS') as boolean
+      const Build = plus.android.importClass("android.os.Build");
+      if (Build.VERSION.SDK_INT >= 33) {
+        //首先判断安卓13引入的新权限
+        result = await requestAndroidPermission('android.permission.POST_NOTIFICATIONS') as boolean
+      } else {
+        result = false
+      }
       //不运行的时候不通知？没关系，我们再试试旧的权限，反正我们只需要知道应用到底能不能发起通知
       if (result == false) {
         const main = plus.android.runtimeMainActivity();
