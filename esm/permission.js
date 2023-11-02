@@ -1,4 +1,4 @@
-import * as origin from 'galanga';
+import { checkNull, notificationPermission as notificationPermissionO, clipboardPermission as clipboardPermissionO, locationPermission as locationPermissionO } from 'galanga';
 // #ifdef APP-PLUS
 const isIOS = (plus.os.name == "iOS");
 // #endif
@@ -7,7 +7,7 @@ export const notificationPermission = {
     check: async () => {
         let result;
         // #ifdef H5
-        result = await origin.notificationPermission.check();
+        result = await notificationPermissionO.check();
         // #endif
         // #ifdef MP || QUICKAPP-WEBVIEW
         result = await uni.getSetting().then((res) => {
@@ -59,7 +59,7 @@ export const notificationPermission = {
     request: async () => {
         let result;
         // #ifdef H5
-        result = await origin.notificationPermission.request();
+        result = await notificationPermissionO.request();
         // #endif
         // #ifdef APP-PLUS
         if (isIOS === true) {
@@ -91,13 +91,29 @@ export const notificationPermission = {
             plus.ios.deleteObject(UIApplication);
         }
         else {
-            result = await requestAndroidPermission('android.permission.ACCESS_NOTIFICATION_POLICY');
+            //首先判断安卓13引入的新权限
+            result = await requestAndroidPermission('android.permission.POST_NOTIFICATIONS');
+            //不运行的时候不通知？没关系，我们再试试旧的权限，反正我们只需要知道应用到底能不能发起通知
+            if (result == false) {
+                const main = plus.android.runtimeMainActivity();
+                let NotificationManagerCompat = plus.android.importClass("android.support.v4.app.NotificationManagerCompat");
+                if (checkNull(NotificationManagerCompat)) {
+                    NotificationManagerCompat = plus.android.importClass("androidx.core.app.NotificationManagerCompat");
+                }
+                const notificationManagerResult = NotificationManagerCompat.from(main).areNotificationsEnabled();
+                if (!notificationManagerResult) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+            }
         }
         // #endif
         // #ifndef H5 || APP-PLUS
         //小程序暂时没有思路去请求，暂时只做检查
         result = await notificationPermission.check().then((check) => {
-            if (origin.checkNull(check)) {
+            if (checkNull(check)) {
                 return false;
             }
             return check;
@@ -113,7 +129,7 @@ export const clipboardPermission = {
     check: async () => {
         let result;
         // #ifdef H5
-        result = await origin.clipboardPermission.check();
+        result = await clipboardPermissionO.check();
         // #endif
         // #ifndef H5
         result = await uni.getClipboardData().then(() => {
@@ -127,11 +143,11 @@ export const clipboardPermission = {
     request: async () => {
         let result;
         // #ifdef H5
-        result = await origin.clipboardPermission.request();
+        result = await clipboardPermissionO.request();
         // #endif
         // #ifndef H5
         result = await clipboardPermission.check().then((check) => {
-            if (origin.checkNull(check)) {
+            if (checkNull(check)) {
                 return false;
             }
             return check;
@@ -147,7 +163,7 @@ export const locationPermission = {
     check: async () => {
         let result;
         // #ifdef H5
-        result = await origin.locationPermission.check();
+        result = await locationPermissionO.check();
         // #endif
         // #ifdef APP-PLUS
         if (isIOS === true) {
@@ -172,11 +188,11 @@ export const locationPermission = {
     request: async () => {
         let result;
         // #ifdef H5
-        result = await origin.locationPermission.request();
+        result = await locationPermissionO.request();
         // #endif
         // #ifdef MP || QUICKAPP-WEBVIEW
         result = await locationPermission.check().then((check) => {
-            if (origin.checkNull(check)) {
+            if (checkNull(check)) {
                 return false;
             }
             return check;

@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.2.5-fix1 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.2.5-fix2 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -975,7 +975,23 @@ const notificationPermission = {
             plus.ios.deleteObject(UIApplication);
         }
         else {
-            result = await requestAndroidPermission('android.permission.ACCESS_NOTIFICATION_POLICY');
+            //首先判断安卓13引入的新权限
+            result = await requestAndroidPermission('android.permission.POST_NOTIFICATIONS');
+            //不运行的时候不通知？没关系，我们再试试旧的权限，反正我们只需要知道应用到底能不能发起通知
+            if (result == false) {
+                const main = plus.android.runtimeMainActivity();
+                let NotificationManagerCompat = plus.android.importClass("android.support.v4.app.NotificationManagerCompat");
+                if (checkNull(NotificationManagerCompat)) {
+                    NotificationManagerCompat = plus.android.importClass("androidx.core.app.NotificationManagerCompat");
+                }
+                const notificationManagerResult = NotificationManagerCompat.from(main).areNotificationsEnabled();
+                if (!notificationManagerResult) {
+                    result = false;
+                }
+                else {
+                    result = true;
+                }
+            }
         }
         // #endif
         // #ifndef H5 || APP-PLUS
