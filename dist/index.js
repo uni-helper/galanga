@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.2.5-fix3 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.2.6 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -353,17 +353,7 @@ const clipboardPermission$1 = {
         else {
             // 尝试读取剪切板内容
             try {
-                const permissionName = "clipboard-write";
-                const info = await navigator.permissions.query({ name: permissionName });
-                if (info.state === 'granted') {
-                    return true;
-                }
-                else if (info.state === 'prompt') {
-                    return null;
-                }
-                else {
-                    return false;
-                }
+                return await defaultW3PermissionQueryCheck("clipboard-write");
             }
             catch {
                 return false;
@@ -399,17 +389,7 @@ const locationPermission$1 = {
         else {
             //尝试获取位置信息
             try {
-                const permissionName = "geolocation";
-                const info = await navigator.permissions.query({ name: permissionName });
-                if (info.state === 'granted') {
-                    return true;
-                }
-                else if (info.state === 'prompt') {
-                    return null;
-                }
-                else {
-                    return false;
-                }
+                return await defaultW3PermissionQueryCheck("geolocation");
             }
             catch {
                 return false;
@@ -434,6 +414,18 @@ const locationPermission$1 = {
         }
     }
 };
+async function defaultW3PermissionQueryCheck(permissionName) {
+    const info = await navigator.permissions.query({ name: permissionName });
+    if (info.state === 'granted') {
+        return true;
+    }
+    else if (info.state === 'prompt') {
+        return null;
+    }
+    else {
+        return false;
+    }
+}
 
 //将importObject中的值更新到object中，如果importObject中的值为空，则不更新
 function updateObjectFromImport(importObject, object) {

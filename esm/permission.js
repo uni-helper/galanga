@@ -1,4 +1,4 @@
-import { checkNull, notificationPermission as notificationPermissionO, clipboardPermission as clipboardPermissionO, locationPermission as locationPermissionO } from 'galanga';
+import { checkNull, notificationPermission as notificationPermissionO, clipboardPermission as clipboardPermissionO, locationPermission as locationPermissionO, cameraPermission as cameraPermissionO, microphonePermission as microphonePermissionO, } from 'galanga';
 // #ifdef APP-PLUS
 const isIOS = (plus.os.name == "iOS");
 // #endif
@@ -209,6 +209,112 @@ export const locationPermission = {
         }
         else {
             result = await requestAndroidPermission('android.permission.ACCESS_FINE_LOCATION');
+        }
+        // #endif
+        return result;
+    }
+};
+// 相机权限相关
+export const cameraPermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await cameraPermissionO.check();
+        // #endif
+        // #ifdef APP-PLUS
+        result = await requestAndroidPermission('android.permission.CAMERA');
+        // #endif
+        // #ifndef H5 || APP-PLUS
+        result = await uni.authorize({
+            scope: 'scope.camera'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await cameraPermissionO.request();
+        // #endif
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        result = await uni.authorize({
+            scope: 'scope.camera'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            //直接发起一个拍照请求，如果用户拒绝了，就会返回错误
+            result = await uni.chooseImage({
+                count: 1,
+                sourceType: ['camera']
+            }).then(() => {
+                return true;
+            }).catch(() => {
+                return false;
+            });
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.CAMERA');
+        }
+        // #endif
+        return result;
+    }
+};
+// 麦克风权限相关
+export const microphonePermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await microphonePermissionO.check();
+        // #endif
+        // #ifdef APP-PLUS
+        result = await requestAndroidPermission('android.permission.RECORD_AUDIO');
+        // #endif
+        // #ifndef H5 || APP-PLUS
+        result = await uni.authorize({
+            scope: 'scope.record'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await microphonePermissionO.request();
+        // #endif
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        result = await uni.authorize({
+            scope: 'scope.record'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            //直接发起一个录音请求，如果用户拒绝了，就会返回错误
+            result = await uni.startRecord().then(() => {
+                uni.stopRecord();
+                return true;
+            }).catch(() => {
+                return false;
+            });
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.RECORD_AUDIO');
         }
         // #endif
         return result;
