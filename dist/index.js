@@ -1,5 +1,5 @@
 /*!
- * @uni-helper/galanga 0.2.6 (https://github.com/uni-helper/galanga)
+ * @uni-helper/galanga 0.2.6-fix1 (https://github.com/uni-helper/galanga)
  * API https://galanga.censujiang.com/api/
  * Copyright 2014-2023 censujiang. All Rights Reserved
  * Licensed under Apache License 2.0 (https://github.com/uni-helper/galanga/blob/master/LICENSE)
@@ -406,6 +406,42 @@ const locationPermission$1 = {
             }
             catch {
                 check = await locationPermission$1.check();
+                return check === true;
+            }
+        }
+        else {
+            return check === true;
+        }
+    }
+};
+//摄像头权限相关
+const cameraPermission$1 = {
+    //判断是否有摄像头权限
+    check: async () => {
+        //判断浏览器是否支持MediaDevices
+        if (!('mediaDevices' in navigator)) {
+            return false;
+        }
+        else {
+            //尝试获取摄像头信息
+            try {
+                return await defaultW3PermissionQueryCheck("camera");
+            }
+            catch {
+                return false;
+            }
+        }
+    },
+    //请求摄像头权限
+    request: async () => {
+        let check = await cameraPermission$1.check();
+        if (check === null) {
+            try {
+                await navigator.mediaDevices.getUserMedia({ video: true });
+                return true;
+            }
+            catch {
+                check = await cameraPermission$1.check();
                 return check === true;
             }
         }
@@ -1087,6 +1123,60 @@ const locationPermission = {
         return result;
     }
 };
+// 相机权限相关
+const cameraPermission = {
+    check: async () => {
+        let result;
+        // #ifdef H5
+        result = await cameraPermission$1.check();
+        // #endif
+        // #ifdef APP-PLUS
+        result = await requestAndroidPermission('android.permission.CAMERA');
+        // #endif
+        // #ifndef H5 || APP-PLUS
+        result = await uni.authorize({
+            scope: 'scope.camera'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        return result;
+    },
+    request: async () => {
+        let result;
+        // #ifdef H5
+        result = await cameraPermission$1.request();
+        // #endif
+        // #ifdef MP || QUICKAPP-WEBVIEW
+        result = await uni.authorize({
+            scope: 'scope.camera'
+        }).then(() => {
+            return true;
+        }).catch(() => {
+            return false;
+        });
+        // #endif
+        // #ifdef APP-PLUS
+        if (isIOS === true) {
+            //直接发起一个拍照请求，如果用户拒绝了，就会返回错误
+            result = await uni.chooseImage({
+                count: 1,
+                sourceType: ['camera']
+            }).then(() => {
+                return true;
+            }).catch(() => {
+                return false;
+            });
+        }
+        else {
+            result = await requestAndroidPermission('android.permission.CAMERA');
+        }
+        // #endif
+        return result;
+    }
+};
 // Android权限查询
 async function requestAndroidPermission(permissionID) {
     return new Promise((resolve, reject) => {
@@ -1129,4 +1219,4 @@ const info = {
     //version: packageJson.version,
 };
 
-export { afterTime, arrayFilterUniqueItem, checkDeviceType, checkEmail, checkNotNull, checkNull, checkPassword, clipboard, clipboardPermission, decode62, encode62, filterUniqueByProperty, formatBytes, formatNumber, formatPercent, getFileExtFromString, getFileNameFromURL, getPreURL, info, localCookie, locationPermission, notificationPermission, share, sleep, spliceSiteTitle, strLength, updateObjectFromImport, url };
+export { afterTime, arrayFilterUniqueItem, cameraPermission, checkDeviceType, checkEmail, checkNotNull, checkNull, checkPassword, clipboard, clipboardPermission, decode62, encode62, filterUniqueByProperty, formatBytes, formatNumber, formatPercent, getFileExtFromString, getFileNameFromURL, getPreURL, info, localCookie, locationPermission, notificationPermission, share, sleep, spliceSiteTitle, strLength, updateObjectFromImport, url };
