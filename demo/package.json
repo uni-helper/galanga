@@ -56,7 +56,7 @@
     "@dcloudio/uni-mp-toutiao": "3.0.0-alpha-4080720251125001",
     "@dcloudio/uni-mp-weixin": "3.0.0-alpha-4080720251125001",
     "@dcloudio/uni-quickapp-webview": "3.0.0-alpha-4080720251125001",
-    "@vueuse/core": "^10.0.0",
+    "@vueuse/core": "^14.0.0",
     "vue": "^3.3.4",
     "vue-i18n": "^9.2.2",
     "@uni-helper/galanga": "file:../"
