@@ -62,7 +62,7 @@
     "@uni-helper/galanga": "file:../"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^0.39.3",
+    "@antfu/eslint-config": "^6.0.0",
     "@dcloudio/types": "^3.3.3",
     "@dcloudio/uni-automator": "3.0.0-alpha-4080720251125001",
     "@dcloudio/uni-cli-shared": "3.0.0-alpha-4080720251125001",
